@@ -11,7 +11,6 @@ We can train the VALL-E model on one GPU.
 * [official demo](https://valle-demo.github.io/)
 * [reproduced demo](https://lifeiteng.github.io/valle/index.html)
 
-<a href="https://www.buymeacoffee.com/feiteng" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="Buy Me A Coffee" style="height: 40px !important;width: 145px !important;" ></a>
 
 <img src="./docs/images/vallf.png" width="500" height="400">
 
@@ -138,23 +137,8 @@ https://github.com/lifeiteng/lifeiteng.github.com/blob/main/valle/run.sh#L68
 * `python3 bin/tokenizer.py ...`
 * `python3 bin/trainer.py ...`
 
-## Contributing
-
-* Parallelize bin/tokenizer.py on multi-GPUs
-* <a href="https://www.buymeacoffee.com/feiteng" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="Buy Me A Coffee" style="height: 40px !important;width: 145px !important;" ></a>
 
 ## Citing
-
-To cite this repository:
-
-```bibtex
-@misc{valle,
-  author={Feiteng Li},
-  title={VALL-E: A neural codec language model},
-  year={2023},
-  url={http://github.com/lifeiteng/vall-e}
-}
-```
 
 ```bibtex
 @article{VALL-E,
@@ -170,7 +154,3 @@ To cite this repository:
   url       = {http://arxiv.org/abs/2301.02111},
 }
 ```
-
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=lifeiteng/vall-e&type=Date)](https://star-history.com/#lifeiteng/vall-e&Date)
