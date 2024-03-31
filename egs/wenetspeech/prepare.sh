@@ -13,9 +13,7 @@ stop_stage=4
 # directories and files. If not, they will be downloaded
 # by this script automatically.
 #
-#  - $dl_dir/aishell
-#      You can download aishell from https://www.openslr.org/33/
-#
+#  - $dl_dir/wenetspeech
 
 dl_dir=$PWD/download
 
@@ -42,67 +40,68 @@ if [ $stage -le 0 ] && [ $stop_stage -ge 0 ]; then
   log "dl_dir: $dl_dir"
   log "Stage 0: Download data"
 
-  # If you have pre-downloaded it to /path/to/aishell,
+  # If you have pre-downloaded it to /path/to/wenetspeech,
   # you can create a symlink
   #
-  #   ln -sfv /path/to/aishell $dl_dir/aishell
+  #   ln -sfv /path/to/wenetspeech $dl_dir/wenetspeech
   #
-  if [ ! -d $dl_dir/aishell/dev ]; then
-    lhotse download aishell $dl_dir
+  # if [ ! -d $dl_dir/wenetspeech/dev ]; then
+  if [ ! -d $dl_dir/wenetspeech/wenet_speech ] && [ ! -f $dl_dir/wenetspeech/metadata/v1.list ]; then
+    echo "!!! You should download WenetSpeech manually !!! And put it in $dl_dir/wenetspeech"
   fi
 fi
 
 if [ $stage -le 1 ] && [ $stop_stage -ge 1 ]; then
-  log "Stage 1: Prepare aishell manifest"
-  # We assume that you have downloaded the aishell corpus
-  # to $dl_dir/aishell
+  log "Stage 1: Prepare wenetspeech manifest"
+  # We assume that you have downloaded the wenetspeech corpus
+  # to $dl_dir/wenetspeech
   mkdir -p data/manifests
-  if [ ! -e data/manifests/.aishell.done ]; then
-    lhotse prepare aishell $dl_dir/aishell data/manifests
-    touch data/manifests/.aishell.done
+  if [ ! -e data/manifests/.wenetspeech.done ]; then
+    lhotse prepare wenet-speech $dl_dir/wenetspeech data/manifests -j $nj
+    touch data/manifests/.wenetspeech.done
   fi
 fi
 
 
 if [ $stage -le 2 ] && [ $stop_stage -ge 2 ]; then
-  log "Stage 2: Tokenize/Fbank aishell"
+  log "Stage 2: Tokenize/Fbank wenetspeech"
   mkdir -p ${audio_feats_dir}
-  if [ ! -e ${audio_feats_dir}/.aishell.tokenize.done ]; then
+  if [ ! -e ${audio_feats_dir}/.wenetspeech.tokenize.done ]; then
     python3 bin/tokenizer.py --dataset-parts "${dataset_parts}" \
         --text-extractor ${text_extractor} \
         --audio-extractor ${audio_extractor} \
         --batch-duration 400 \
-        --prefix "aishell" \
+        --prefix "wenetspeech" \
         --src-dir "data/manifests" \
         --output-dir "${audio_feats_dir}"
   fi
-  touch ${audio_feats_dir}/.aishell.tokenize.done
+  touch ${audio_feats_dir}/.wenetspeech.tokenize.done
 fi
 
 if [ $stage -le 3 ] && [ $stop_stage -ge 3 ]; then
-  log "Stage 3: Prepare aishell train/dev/test"
-  if [ ! -e ${audio_feats_dir}/.aishell.train.done ]; then
+  log "Stage 3: Prepare wenetspeech train/dev/test"
+  if [ ! -e ${audio_feats_dir}/.wenetspeech.train.done ]; then
     # dev 14326
     lhotse subset --first 400 \
-        ${audio_feats_dir}/aishell_cuts_dev.jsonl.gz \
+        ${audio_feats_dir}/wenetspeech_cuts_dev.jsonl.gz \
         ${audio_feats_dir}/cuts_dev.jsonl.gz
 
     lhotse subset --last 13926 \
-        ${audio_feats_dir}/aishell_cuts_dev.jsonl.gz \
+        ${audio_feats_dir}/wenetspeech_cuts_dev.jsonl.gz \
         ${audio_feats_dir}/cuts_dev_others.jsonl.gz
 
     # train
     lhotse combine \
         ${audio_feats_dir}/cuts_dev_others.jsonl.gz \
-        ${audio_feats_dir}/aishell_cuts_train.jsonl.gz \
+        ${audio_feats_dir}/wenetspeech_cuts_train.jsonl.gz \
         ${audio_feats_dir}/cuts_train.jsonl.gz
 
     # test
     lhotse copy \
-      ${audio_feats_dir}/aishell_cuts_test.jsonl.gz \
+      ${audio_feats_dir}/wenetspeech_cuts_test.jsonl.gz \
       ${audio_feats_dir}/cuts_test.jsonl.gz
 
-    touch ${audio_feats_dir}/.aishell.train.done
+    touch ${audio_feats_dir}/.wenetspeech.train.done
   fi
 fi
 
