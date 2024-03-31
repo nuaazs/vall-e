@@ -28,15 +28,13 @@ To get up and running quickly just follow the steps below:
 
 ```
 # PyTorch
-pip install torch==1.13.1 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu116
-pip install torchmetrics==0.11.1
-# fbank
-pip install librosa==0.8.1
+pip install torch==1.13.1 torchmetrics==0.11.1 librosa==0.8.1 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu116 -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 # phonemizer pypinyin
-apt-get install espeak-ng
+apt-get install espeak-ng -i https://pypi.tuna.tsinghua.edu.cn/simple
+
 ## OSX: brew install espeak
-pip install phonemizer==3.2.1 pypinyin==0.48.0
+pip install phonemizer==3.2.1 pypinyin==0.48.0 -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 # lhotse update to newest version
 # https://github.com/lhotse-speech/lhotse/pull/956
@@ -47,7 +45,8 @@ pip install git+https://github.com/lhotse-speech/lhotse
 
 # k2
 # find the right version in https://huggingface.co/csukuangfj/k2
-pip install https://huggingface.co/csukuangfj/k2/resolve/main/cuda/k2-1.23.4.dev20230224+cuda11.6.torch1.13.1-cp310-cp310-linux_x86_64.whl
+# cuda 116 or cuda 117
+pip install https://hf-mirror.com/csukuangfj/k2/resolve/main/cuda/k2-1.23.4.dev20230224+cuda11.6.torch1.13.1-cp310-cp310-linux_x86_64.whl
 
 # icefall
 git clone https://github.com/k2-fsa/icefall
